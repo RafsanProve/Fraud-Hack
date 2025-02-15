@@ -1,73 +1,77 @@
 import 'package:flutter/material.dart';
-import 'package:hackathon07/screens/admin_screen.dart';
+import 'package:hackathon07/services/api_service.dart';
 import 'package:hackathon07/screens/dashboard_screen.dart';
-import 'package:hackathon07/screens/signup.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  _LoginScreenState createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final ApiService apiService = ApiService();
+
+  void handleLogin() async {
+    try {
+      print("Hello");
+      final response = await apiService.login(phoneController.text, passwordController.text);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DashboardScreen(token: response["token"]),
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Login Failed: ${e.toString()}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightGreen[200],
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Financial Hack",
-                  style: TextStyle(fontSize: 64, fontWeight: FontWeight.bold, fontFamily: "Italianno")),
-              SizedBox(height: 20),
+              const Text("Financial Hack", style: TextStyle(fontSize: 64, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
               TextField(
+                controller: phoneController,
                 decoration: InputDecoration(
-                    labelText: "Contact Number",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  labelText: "Contact Number",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
-              SizedBox(height: 15),
+              const SizedBox(height: 15),
               TextField(
+                controller: passwordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    labelText: "Password",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  labelText: "Password",
+                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                   filled: true,
                   fillColor: Colors.white,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green.shade900,
-                  minimumSize: Size(double.infinity, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminScreen()),
-                  );
-                },
+                onPressed: handleLogin,
                 child: Text("Sign In", style: TextStyle(fontSize: 18, color: Colors.lightGreen[200])),
-              ),
-              SizedBox(height: 50),
-              Text("Don’t have an account? Then...", style: TextStyle(fontSize: 16)),
-              SizedBox(height: 5),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.green.shade900,
-                  minimumSize: Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const SignUpPage()),
-                  );
-                },
-                child: Text("Sign Up", style: TextStyle(fontSize: 18, color: Colors.lightGreen[200])),
               ),
             ],
           ),

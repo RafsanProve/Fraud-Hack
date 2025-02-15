@@ -38,6 +38,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   smooth_page_indicator: ^1.2.0+3
   fl_chart: ^0.63.0
+  http: ^0.13.5
 
 dev_dependencies:
   flutter_test:
