@@ -1,0 +1,8 @@
+1. Bayes' theorem to calculate posterior of a transaction being
+fraud
+
+2. Plot customer data in graph (multiple graphs,like time vs money,
+time vs time_of_day, etc) and use supervised ML to detect fraud
+
+3. finding coefficient of variance to figure out how data
+is varying from previous data
